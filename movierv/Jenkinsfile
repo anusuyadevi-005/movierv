@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs "Node16"   // NodeJS tool configured in Jenkins
+        nodejs "Node16"
     }
 
     stages {
@@ -14,7 +14,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                dir('movierv') {    // 👈 change this to the folder where package.json is
+                dir('movierv') {
                     bat "npm install"
                 }
             }
@@ -22,7 +22,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir('movierv') {    // 👈 same folder
+                dir('movierv') {
                     bat "npm run build"
                 }
             }
@@ -30,7 +30,9 @@ pipeline {
 
         stage('Archive') {
             steps {
-                archiveArtifacts artifacts: '**/build/**', followSymlinks: false
+                dir('movierv') {
+                    archiveArtifacts artifacts: 'dist/**', fingerprint: true
+                }
             }
         }
     }
