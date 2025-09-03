@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs "Node16"   // 🔹 This name must match what you set in Manage Jenkins
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -25,10 +29,5 @@ pipeline {
                 archiveArtifacts artifacts: 'dist/**', fingerprint: true
             }
         }
-    }
-
-    post {
-        success { echo 'Pipeline finished SUCCESS' }
-        failure { echo 'Pipeline finished FAILURE' }
     }
 }
