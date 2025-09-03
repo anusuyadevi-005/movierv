@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs "Node16"   // 🔹 This name must match what you set in Manage Jenkins
+        nodejs "Node16"   // NodeJS tool configured in Jenkins
     }
 
     stages {
@@ -14,19 +14,23 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                bat 'npm install'
+                dir('movierv') {    // 👈 change this to the folder where package.json is
+                    bat "npm install"
+                }
             }
         }
 
         stage('Build') {
             steps {
-                bat 'npm run build'
+                dir('movierv') {    // 👈 same folder
+                    bat "npm run build"
+                }
             }
         }
 
         stage('Archive') {
             steps {
-                archiveArtifacts artifacts: 'dist/**', fingerprint: true
+                archiveArtifacts artifacts: '**/build/**', followSymlinks: false
             }
         }
     }
