@@ -8,31 +8,26 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/anusuyadevi-005/movierv.git'
+                git branch: 'main', url: 'https://github.com/anusuyadevi-005/expense.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                dir('movierv') {
-                    bat "npm install"
-                }
+                bat "npm install"
             }
         }
 
         stage('Build') {
             steps {
-                dir('movierv') {
-                    bat "npm run build"
-                }
+                bat "npm run build"
             }
         }
 
         stage('Archive') {
             steps {
-                dir('movierv') {
-                    archiveArtifacts artifacts: 'dist/**', fingerprint: true
-                }
+                // If React, use build/**; if Angular/Vue, use dist/**
+                archiveArtifacts artifacts: 'dist/**, build/**', fingerprint: true
             }
         }
     }
